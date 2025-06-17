@@ -63,8 +63,11 @@ public class PhonebookDAO {
 		}
 	}
 	
-	// 책 등록
-	public int bookInsert(String title, String pubs, String pubDate, int authorId) {
+	// 등록
+	public int personInsert(PersonVO personVO) {
+		
+		System.out.println("personInsert()");
+		
 		int count = -1;
 		
 		// 0. import java.sql.*;
@@ -74,20 +77,76 @@ public class PhonebookDAO {
 		this.connect();
 		
 		try {
-			
 			// 3. SQL문 준비 / 바인딩 / 실행
 			// SQL문 준비
 			String query = "";
-			query += " insert into book ";
-			query += " values(null, ?, ?, ?, ?) ";
-			System.out.println(query);
+			query += " insert into person ";
+			query += " values(null, ?, ?, ?) ";
+			
+			// 바인딩 준비
+			String name = personVO.getName();
+			String hp = personVO.getHp();
+			String company = personVO.getCompany();
 			
 			// 바인딩
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, title); // 메소드의 파라미터
-			pstmt.setString(2, pubs); // 메소드의 파라미터
-			pstmt.setString(3, pubDate); // 메소드의 파라미터
-			pstmt.setInt(4, authorId); // 메소드의 파라미터
+			pstmt.setString(1, name);
+			pstmt.setString(2, hp);
+			pstmt.setString(3, company);
+			
+			String debugQuery = String.format(
+					"insert into person values(null, '%s', '%s', '%s')",
+					name, hp, company
+					);
+			System.out.println(debugQuery);
+			
+			// 실행
+			count = pstmt.executeUpdate();
+			
+			// 4.결과처리
+			
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		}
+		
+		// 5. 자원정리
+		this.close();
+		
+		return count;
+	}
+	
+	// 삭제
+	public int personDelete(int pId) {
+		
+		System.out.println("personDelete()");
+		
+		int count = -1;
+		
+		// 0. import java.sql.*;
+		
+		// 1. JDBC 드라이버 (MySQL) 로딩
+		// 2. Connection 얻어오기
+		this.connect();
+		
+		try {
+			// 3. SQL문 준비 / 바인딩 / 실행
+			// SQL문 준비
+			String query = "";
+			query += " delete from person ";
+			query += " where person_id = ? ";
+			
+			// 바인딩 준비
+			int personId = pId;
+			
+			// 바인딩
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, personId);
+			
+			String debugQuery = String.format(
+					"delete from person where person_id = '%s'",
+					personId
+					);
+			System.out.println(debugQuery);
 			
 			// 실행
 			count = pstmt.executeUpdate();

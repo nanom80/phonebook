@@ -27,21 +27,28 @@
 			<tbody>
 				<tr>
 					<td>이름(name)</td>
-					<td><%=personList.get(i).getName()%></td>
+					<td><%= personList.get(i).getName() %></td>
 				</tr>
 				<tr>
 					<td>핸드폰(hp)</td>
-					<td><%=personList.get(i).getHp()%></td>
+					<td><%= personList.get(i).getHp() %></td>
 				</tr>
 				<tr>
 					<td>회사(company)</td>
-					<td><%=personList.get(i).getCompany()%></td>
+					<td><%= personList.get(i).getCompany() %></td>
+				</tr>
+				<tr>
+					<td>수정폼으로 이동</td>
+					<td><a href="http://192.168.0.99:8080/phonebook/pbc?action=delete&pId=<%=personList.get(i).getPersonId()%>">삭제 <%=personList.get(i).getPersonId()%></a></td>
 				</tr>
 			</tbody>
 		</table>
 	<%
 	}
 	%>
+	
+	<br>
+	<a href="http://192.168.0.99:8080/phonebook/pbc?action=wform">주소록 작성폼으로 이동</a>
 
 </body>
 </html>
